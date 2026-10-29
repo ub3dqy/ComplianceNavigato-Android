@@ -1,0 +1,8 @@
+Roboto Regular is used only by deterministic screenshot tests and is not bundled into the Android application.
+
+Source: the official Flutter 3.47.0 SDK DevTools resources.
+Upstream: https://github.com/googlefonts/roboto-3-classic
+License: Apache License 2.0 (SPDX: Apache-2.0).
+Copyright: The Roboto Project Authors.
+
+MaterialIcons-Regular.otf is also used only by screenshot tests. It comes from the same official Flutter SDK resources and is licensed under Apache-2.0 by the Material Icons authors.

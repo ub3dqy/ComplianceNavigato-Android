@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "designVersion": "green-v1",
+  "adaptiveForeground": "android/app/src/main/res/drawable/ic_launcher_foreground.xml",
+  "adaptiveMonochrome": "android/app/src/main/res/drawable/ic_launcher_monochrome.xml",
+  "legacy": [
+    {
+      "path": "android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+      "size": 48,
+      "sha256": "5747c52c59607bf97da3103abd4f0831c87dcde8591994decdf76ecc7fa0f11e"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+      "size": 72,
+      "sha256": "bd0ab5c44d0fab228b0b4557031fd386775d380f447ff8c5f5d2f6e31ac19a3f"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+      "size": 96,
+      "sha256": "268dbff19e398aa8988b8490eac689659a8046eaf5e50924deeb607f63992acd"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+      "size": 144,
+      "sha256": "f87aae8b9f670f2f61bce7e646018b1524e4ab459ac30ab96c195faa90003a05"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+      "size": 192,
+      "sha256": "96f98a87f86f24d612690040cfbb6c471dc4a55c0ff983b21e7a70a555e16b69"
+    }
+  ]
+}

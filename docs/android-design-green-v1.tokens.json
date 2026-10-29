@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "designVariant": 2,
+  "designName": "Свежий зелёный",
+  "designVersion": "green-v1",
+  "light": {
+    "primary": "#078B4B",
+    "primaryDark": "#056A39",
+    "primaryAccent": "#38C978",
+    "primaryContainer": "#EAF8F0",
+    "background": "#F4F8F5",
+    "surface": "#FFFFFF",
+    "surfaceVariant": "#EEF5F0",
+    "textPrimary": "#15251B",
+    "textSecondary": "#607067",
+    "outline": "#DCE8E0",
+    "disabled": "#95A29A"
+  },
+  "dark": {
+    "background": "#09150F",
+    "surface": "#122219",
+    "surfaceVariant": "#182C21",
+    "primary": "#35D07F",
+    "primaryContainer": "#174D31",
+    "textPrimary": "#F1F8F4",
+    "textSecondary": "#A9B9AF",
+    "outline": "#294236"
+  },
+  "semantic": {
+    "lightSuccess": "#1C7450",
+    "lightWarning": "#9A5A00",
+    "lightError": "#BA1A1A",
+    "lightInformation": "#245FAF",
+    "lightNeedsHumanReview": "#7046A2",
+    "darkSuccess": "#70D7A6",
+    "darkWarning": "#FFB95A",
+    "darkError": "#FFB4AB",
+    "darkInformation": "#A9C7FF",
+    "darkNeedsHumanReview": "#DAB9FF"
+  },
+  "spacingDp": [4, 8, 12, 16, 24, 32],
+  "radiiDp": {
+    "card": 16,
+    "button": 13,
+    "input": 12
+  },
+  "minimumTouchTargetDp": 48
+}

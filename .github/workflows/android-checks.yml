@@ -1,0 +1,72 @@
+name: Android checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mobile:
+    name: Flutter checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          channel: stable
+          flutter-version-file: mobile/.flutter-version
+          cache: false
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Resolve locked packages
+        working-directory: mobile
+        run: flutter pub get --enforce-lockfile
+
+      - name: Check generated API models
+        working-directory: mobile
+        run: |
+          dart run build_runner build
+          git diff --exit-code -- lib/core/network/api_models.g.dart
+
+      - name: Check formatting
+        working-directory: mobile
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze
+        working-directory: mobile
+        run: flutter analyze
+
+      - name: Run tests with coverage
+        working-directory: mobile
+        run: flutter test --coverage --concurrency=1
+
+      - name: Enforce coverage threshold
+        working-directory: mobile
+        run: python ../scripts/assert_mobile_coverage.py --lcov coverage/lcov.info --source-root lib
+
+      - name: Check visual screenshots
+        working-directory: mobile
+        run: flutter test tool/golden_screenshots_test.dart
+
+      - name: Check mobile mockups
+        working-directory: mobile
+        run: flutter test tool/mobile_mockup_acceptance_test.dart

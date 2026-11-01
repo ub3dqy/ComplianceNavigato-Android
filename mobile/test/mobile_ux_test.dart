@@ -146,7 +146,7 @@ ProviderContainer _container(WidgetTester tester) =>
 
 Future<void> _edit(WidgetTester tester) async {
   await tester.tap(find.byType(NavigationDestination).at(1));
-  await tester.pumpAndSettle();
+  await _waitFor(tester, find.text('Нет'));
   await tester.tap(find.text('Нет'));
   await tester.pumpAndSettle();
 }

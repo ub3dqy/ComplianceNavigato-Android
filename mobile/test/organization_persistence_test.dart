@@ -291,7 +291,7 @@ void registerOrganizationPersistenceTests() {
         await tester.tap(
           find.widgetWithText(FilledButton, 'Повторить сохранение'),
         );
-        await tester.pumpAndSettle();
+        await _until(tester, () => find.byType(AlertDialog).evaluate().isEmpty);
         expect(adapter.writes, hasLength(2));
         expect(
           adapter.writes[0].headers['Idempotency-Key'],
@@ -349,7 +349,7 @@ void registerOrganizationPersistenceTests() {
         expect(cancel.onPressed, isNull);
         expect(saving.onPressed, isNull);
         expect(adapter.writes, hasLength(1));
-        await tester.pumpAndSettle();
+        await _until(tester, () => find.byType(AlertDialog).evaluate().isEmpty);
         expect(find.text('Учебный черновик $kind'), findsOneWidget);
         expect(tester.takeException(), isNull);
       },
@@ -403,7 +403,7 @@ void registerOrganizationPersistenceTests() {
       );
       await tester.pumpAndSettle();
       await tester.tap(find.widgetWithText(FilledButton, 'Сохранить'));
-      await tester.pumpAndSettle();
+      await _until(tester, () => find.byType(AlertDialog).evaluate().isEmpty);
       expect(adapter.writes, hasLength(2));
       expect(
         adapter.writes[0].headers['Idempotency-Key'],
@@ -574,7 +574,7 @@ void registerOrganizationPersistenceTests() {
       await tester.tap(
         find.widgetWithText(FilledButton, 'Повторить сохранение'),
       );
-      await tester.pumpAndSettle();
+      await _until(tester, () => find.byType(AlertDialog).evaluate().isEmpty);
       expect(adapter.writes, hasLength(3));
       expect(
         adapter.writes.map((r) => r.headers['Idempotency-Key']).toSet(),
@@ -609,7 +609,7 @@ void registerOrganizationPersistenceTests() {
       expect(adapter.writes, hasLength(1));
       expect(find.text('Учебный черновик site'), findsOneWidget);
       await tester.tap(find.widgetWithText(FilledButton, 'Сохранить'));
-      await tester.pumpAndSettle();
+      await _until(tester, () => find.byType(AlertDialog).evaluate().isEmpty);
       expect(adapter.writes, hasLength(2));
       expect(adapter.writes[0].headers['If-Match'], '"website-1"');
       expect(adapter.writes[1].headers['If-Match'], '"website-2"');
@@ -785,7 +785,7 @@ void registerObligationPersistenceTests() {
         'Исправленный учебный комментарий',
       );
       await tester.tap(find.widgetWithText(FilledButton, 'Подтвердить'));
-      await tester.pumpAndSettle();
+      await _until(tester, () => find.byType(AlertDialog).evaluate().isEmpty);
       expect(adapter.writes, hasLength(2));
       expect(
         (adapter.writes.last.data as Map)['completion_comment'],
@@ -837,7 +837,12 @@ void registerObligationPersistenceTests() {
     await tester.tap(task);
     await tester.pump();
     release.complete();
-    await tester.pumpAndSettle();
+    await _until(
+      tester,
+      () =>
+          task.evaluate().isNotEmpty &&
+          tester.widget<CheckboxListTile>(task).value == true,
+    );
     expect(adapter.writes, hasLength(1));
     expect(tester.widget<CheckboxListTile>(task).value, isTrue);
   });
@@ -882,7 +887,7 @@ void registerObligationPersistenceTests() {
       await tester.tap(
         find.widgetWithText(FilledButton, 'Повторить сохранение'),
       );
-      await tester.pumpAndSettle();
+      await _until(tester, () => find.byType(AlertDialog).evaluate().isEmpty);
       expect(adapter.writes, hasLength(2));
       expect(adapter.replays, hasLength(1));
       expect(
@@ -924,7 +929,7 @@ void registerObligationPersistenceTests() {
       expect(field.enabled, isFalse);
       expect(save.onPressed, isNull);
       expect(find.byType(AlertDialog), findsOneWidget);
-      await tester.pumpAndSettle();
+      await _until(tester, () => find.byType(AlertDialog).evaluate().isEmpty);
       expect(adapter.writes, hasLength(1));
       expect(find.byType(AlertDialog), findsNothing);
     },
@@ -944,7 +949,7 @@ void registerObligationPersistenceTests() {
       expect(adapter.writes, hasLength(1));
       expect(find.text('Учебное подтверждение выполнения'), findsOneWidget);
       await tester.tap(find.widgetWithText(FilledButton, 'Подтвердить'));
-      await tester.pumpAndSettle();
+      await _until(tester, () => find.byType(AlertDialog).evaluate().isEmpty);
       expect(adapter.writes, hasLength(2));
       expect(adapter.writes.first.headers['If-Match'], '"obligation-1"');
       expect(adapter.writes.last.headers['If-Match'], '"obligation-2"');
@@ -963,7 +968,12 @@ void registerObligationPersistenceTests() {
       );
       for (final completed in [true, false, true]) {
         await tester.tap(task);
-        await tester.pumpAndSettle();
+        await _until(
+          tester,
+          () =>
+              task.evaluate().isNotEmpty &&
+              tester.widget<CheckboxListTile>(task).value == completed,
+        );
         expect(tester.widget<CheckboxListTile>(task).value, completed);
       }
       expect(adapter.writes, hasLength(3));
@@ -1005,7 +1015,12 @@ void registerObligationPersistenceTests() {
     final control = tester.widget<CheckboxListTile>(task);
     reload.complete();
     expect(control.onChanged, isNull);
-    await tester.pumpAndSettle();
+    await _until(
+      tester,
+      () =>
+          task.evaluate().isNotEmpty &&
+          tester.widget<CheckboxListTile>(task).value == true,
+    );
     expect(tester.widget<CheckboxListTile>(task).value, isTrue);
     expect(adapter.writes, hasLength(1));
   });
@@ -1023,7 +1038,15 @@ void registerObligationPersistenceTests() {
       await tester.tap(
         find.widgetWithText(CheckboxListTile, 'Подготовить черновик'),
       );
-      await tester.pumpAndSettle();
+      await _until(
+        tester,
+        () => find
+            .text(
+              'Задача сохранена. Не удалось обновить список. Обновите экран.',
+            )
+            .evaluate()
+            .isNotEmpty,
+      );
       expect(adapter.writes, hasLength(1));
       expect(
         find.text(
@@ -1032,10 +1055,15 @@ void registerObligationPersistenceTests() {
         findsOneWidget,
       );
       await tester.tap(find.text('Повторить'));
-      await tester.pumpAndSettle();
       final task = find.widgetWithText(
         CheckboxListTile,
         'Подготовить черновик',
+      );
+      await _until(
+        tester,
+        () =>
+            task.evaluate().isNotEmpty &&
+            tester.widget<CheckboxListTile>(task).value == true,
       );
       expect(tester.widget<CheckboxListTile>(task).value, isTrue);
       expect(adapter.writes, hasLength(1));
@@ -1056,7 +1084,7 @@ void registerAcknowledgedRefreshTests() {
       final dialogStillOpen = find.byType(AlertDialog).evaluate().isNotEmpty;
       reload.complete();
       expect(dialogStillOpen, isTrue);
-      await tester.pumpAndSettle();
+      await _until(tester, () => find.byType(AlertDialog).evaluate().isEmpty);
       expect(find.byType(AlertDialog), findsNothing);
       await tester.tap(find.text('Проверить политику'));
       await tester.pumpAndSettle();
@@ -1079,7 +1107,15 @@ void registerAcknowledgedRefreshTests() {
       );
       await _completeForm(tester);
       await tester.tap(find.widgetWithText(FilledButton, 'Подтвердить'));
-      await tester.pumpAndSettle();
+      await _until(
+        tester,
+        () => find
+            .text(
+              'Сведения сохранены. Не удалось обновить список. Повторите обновление.',
+            )
+            .evaluate()
+            .isNotEmpty,
+      );
       expect(adapter.writes, hasLength(1));
       expect(
         find.text(
@@ -1088,7 +1124,7 @@ void registerAcknowledgedRefreshTests() {
         findsOneWidget,
       );
       await tester.tap(find.widgetWithText(FilledButton, 'Обновить список'));
-      await tester.pumpAndSettle();
+      await _until(tester, () => find.byType(AlertDialog).evaluate().isEmpty);
       expect(adapter.writes, hasLength(1));
       expect(find.byType(AlertDialog), findsNothing);
     },

@@ -3,7 +3,7 @@ val minimumUpdate = Regex("^17\\.0\\.([1-9][0-9]*)$").matchEntire(minimumJava)
     ?.groupValues?.get(1)?.toInt() ?: error("Invalid project Java minimum")
 val runtimeJava = Runtime.version()
 check(runtimeJava.feature() == 17 && runtimeJava.interim() == 0 && runtimeJava.update() >= minimumUpdate) {
-    "JDK 17 >= $minimumJava is required; actual runtime is $runtimeJava. Use docs/development.md."
+    "JDK 17 >= $minimumJava is required; actual runtime is $runtimeJava. See docs/development.md for the Android toolchain requirements."
 }
 println("PROJECT_JAVA_QUALIFIED runtime=$runtimeJava minimum=$minimumJava")
 

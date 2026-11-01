@@ -69,7 +69,7 @@ set DEFAULT_JVM_OPTS="-Xmx64m" "-Xms64m"
 set "COMPLIANCE_GRADLE_JAVA_HOME="
 for /f "usebackq delims=" %%J in (`powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%APP_HOME%\..\..\scripts\get-android-java-home.ps1"`) do set "COMPLIANCE_GRADLE_JAVA_HOME=%%J"
 if not defined COMPLIANCE_GRADLE_JAVA_HOME (
-    echo ERROR: No qualified project JDK. See docs/development.md. 1>&2
+    echo ERROR: No qualified project JDK. See docs/development.md for the Android toolchain requirements. 1>&2
     "%COMSPEC%" /c exit 1
     goto exitWithErrorLevel
 )

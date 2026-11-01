@@ -77,9 +77,8 @@ android {
         checkReleaseBuilds = true
         htmlReport = true
         xmlReport = true
-        // AGP lint normalizes the ignored Windows local.properties SDK path before
-        // PropertyEscape inspects it. docs/development.md validates the
-        // original file and keeps every other lint issue blocking.
+        // AGP normalizes the ignored Windows local.properties SDK path before
+        // PropertyEscape inspects it. Keep all other release lint checks blocking.
         disable += "PropertyEscape"
     }
 }
@@ -98,7 +97,7 @@ tasks.configureEach {
     if (name.contains("Release", ignoreCase = true)) {
         doFirst {
             require(hasPilotSigning) {
-                "Release signing is required. Use docs/development.md."
+                "Release signing is required. See docs/development.md."
             }
         }
     }
